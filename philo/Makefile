@@ -5,7 +5,7 @@ NAME_PROJECT		= philosophers
 
 HEADER_PATH		= ./include
 
-SRC_CLIENT_PATH	= philosophers.c helpers.c
+SRC_CLIENT_PATH	= ./src/philosophers.c ./src/helpers.c
 
 BINARY_OUT_PROJ	= philosophers
 

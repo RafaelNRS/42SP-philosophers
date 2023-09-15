@@ -6,7 +6,7 @@
 /*   By: ranascim <ranascim@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:20:45 by ranascim          #+#    #+#             */
-/*   Updated: 2023/09/14 18:29:06 by ranascim         ###   ########.fr       */
+/*   Updated: 2023/09/15 11:50:17 by ranascim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdint.h>
 # include <stdio.h>
 # include <sys/time.h>
+# include <sys/types.h>
 
 
 struct	s_data;
