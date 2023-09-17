@@ -6,7 +6,7 @@
 /*   By: ranascim <ranascim@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:34:37 by ranascim          #+#    #+#             */
-/*   Updated: 2023/09/14 18:28:44 by ranascim         ###   ########.fr       */
+/*   Updated: 2023/09/17 14:07:41 by ranascim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,39 +140,6 @@ size_t	ft_strlen(const char *s)
 	return (len);
 }
 
-void	clear_data(t_data	*data)
-{
-	if (data->tid)
-		free(data->tid);
-	if (data->forks)
-		free(data->forks);
-	if (data->philos)
-		free(data->philos);
-}
-
-void	ft_exit(t_data *data)
-{
-	int	i;
-
-	i = -1;
-	while (++i < data->philo_num)
-	{
-		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&data->philos[i].lock);
-	}
-	pthread_mutex_destroy(&data->write);
-	pthread_mutex_destroy(&data->lock);
-	clear_data(data);
-}
-
-int	error(char *str, t_data *data)
-{
-	printf("%s\n", str);
-	if (data)
-		ft_exit(data);
-	return (1);
-}
-
 uint64_t	get_time(void)
 {
 	struct timeval	tv;
@@ -180,13 +147,4 @@ uint64_t	get_time(void)
 	if (gettimeofday(&tv, NULL))
 		return (error("gettimeofday() FAILURE\n", NULL));
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
-}
-
-int	ft_usleep(useconds_t time)
-{
-	uint64_t	start;
-	start = get_time();
-	while ((get_time() - start) < time)
-		usleep(time / 10);
-	return(0);
 }

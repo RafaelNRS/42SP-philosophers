@@ -6,7 +6,7 @@
 /*   By: ranascim <ranascim@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:20:58 by ranascim          #+#    #+#             */
-/*   Updated: 2023/09/14 18:26:10 by ranascim         ###   ########.fr       */
+/*   Updated: 2023/09/17 14:05:07 by ranascim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,64 @@ int	validate(char **argv)
 	return (1);
 }
 
-int	*routine(void *data_pointer)
+
+
+void init_philosophers(t_data *data, int philo_number, int philo_count)
 {
-	printf("1\n");
+	t_philo	*philo;
+	
+	philo = malloc(philo_number * sizeof(t_philo));
+	while (philo_count < philo_number)
+	{
+		pthread_mutex_init(&philo[philo_count].mutex_last_meal, NULL);
+		pthread_mutex_init(&philo[philo_count].mutex_ate_meals, NULL);
+		philo[philo_count].philo_id = philo_count + 1;
+		philo[philo_count].right_fork = &data->forks[philo_count];
+		philo[philo_count].left_fork = &data->forks[(philo_count + 1) % philo_number];
+		philo[philo_count].data = data;
+		philo[philo_count].nb_ate_meals = 0;
+		philo_count++;
+	}
+	data->philo = philo;
+}
+
+void	init_mutex(t_data *data, int fork_count)
+{
+	pthread_mutex_init(&data->write, NULL);
+	pthread_mutex_init(&data->mutex_died, NULL);
+	pthread_mutex_init(&data->mutex_finish, NULL);
+	data->forks = malloc(data->nb_philos * sizeof(pthread_mutex_t));
+	while (fork_count < data->nb_philos)
+	{
+		pthread_mutex_init(&data->forks[fork_count], NULL);
+		fork_count++;
+	}
+}
+
+void	init_arguments(int argc, char **argv, t_data *data)
+{
+	data->nb_philos = ft_atoi(argv[1]);
+	data->time_die = ft_atoi(argv[2]);
+	data->time_eat = ft_atoi(argv[3]);
+	data->time_sleep = ft_atoi(argv[4]);
+	data->finish = 0;
+	data->died = 0;
+	if (argv == 6)
+		data->nb_times_must_eat = ft_atoi(argv[5]);
+	else
+		data->nb_times_must_eat = INT64_MAX;
 }
 
 int	main(int argc, char *argv[])
 {
-	pthread_t	tid;
+	t_data	data;
 	
 	if (argc < 5 || argc > 6)
 		return (1);
 	if (! validate(argv))
 		return (1);
 	printf("ok\n");
-	pthread_create(&tid, NULL, &routine, &data_pointer);
+	init_arguments(argc, argv, &data);
+	init_mutex(&data, 0);
+	init_philos(&data, data.nb_philos, 0);
 }

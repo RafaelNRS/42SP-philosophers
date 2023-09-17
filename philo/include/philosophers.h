@@ -6,7 +6,7 @@
 /*   By: ranascim <ranascim@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:20:45 by ranascim          #+#    #+#             */
-/*   Updated: 2023/09/15 11:50:17 by ranascim         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:47:35 by ranascim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,38 +23,38 @@
 # include <sys/types.h>
 
 
-struct	s_data;
-
-typedef struct s_philo
-{
-	struct s_data	*data;
-	pthread_t       t1;
-	int             id;
-	int             eat_cont;
-	int             status;
-	int             eating;
-	uint64_t        time_to_die;
-	pthread_mutex_t	lock;
-	pthread_mutex_t	*r_fork;
-	pthread_mutex_t	*l_fork;
-} t_philo;
+typedef struct s_philo	t_philo;
 
 typedef struct s_data
 {
-	pthread_t       *tid;
-	int             philo_num;
-	int             meals_nb;
-	int             dead;
-	int             finished;
-	t_philo         *philos;
-	uint64_t        death_time;
-	uint64_t        eat_time;
-	uint64_t        sleep_time;
-	uint64_t        start_time;
-	pthread_mutex_t *forks;
-	pthread_mutex_t lock;
-	pthread_mutex_t write;
-} t_data;
+	int				nb_philos;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				nb_times_must_eat;
+	long int			start_time;
+	long int			finish;
+	long int			died;
+	pthread_mutex_t	write;
+	pthread_mutex_t	mutex_finish;
+	pthread_mutex_t	mutex_died;
+	pthread_mutex_t	*forks;
+	t_philo			*philo;
+}	t_data;
+
+struct s_philo
+{
+	int				philo_id;
+	long int			nb_ate_meals;
+	long int			last_meal;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	mutex_last_meal;
+	pthread_mutex_t	mutex_ate_meals;
+	pthread_t			thread;
+	t_data			*data;
+};
+
 
 void	ft_bzero(void *s, int n);
 
