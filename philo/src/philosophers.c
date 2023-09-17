@@ -6,7 +6,7 @@
 /*   By: ranascim <ranascim@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 17:20:58 by ranascim          #+#    #+#             */
-/*   Updated: 2023/09/17 14:05:07 by ranascim         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:36:40 by ranascim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,39 @@ int	validate(char **argv)
 	return (1);
 }
 
+void	*routine(void *arg)
+{
+	//todo
+}
 
+void *check_philos(void *arg)
+{
+	//todo
+}
+
+void	init_threads(t_data *data, int nb)
+{
+	int		i;
+	pthread_t	verify;
+
+	i = 0;
+	data->start_time = get_time();
+	while (i < nb)
+	{
+		data->philo[i].last_meal = data->start_time;
+		pthread_create(&data->philo[i].thread, NULL, &routine,
+			&data->philo[i]);
+		i++;
+	}
+	pthread_create(&verify, NULL, &check_philos, data);
+	i = 0;
+	while (i < nb)
+	{
+		pthread_join(data->philo[i].thread, NULL);
+		i++;
+	}
+	pthread_join(verify, NULL);
+}
 
 void init_philosophers(t_data *data, int philo_number, int philo_count)
 {
