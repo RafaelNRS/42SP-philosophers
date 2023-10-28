@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"stdarg.h": "c",
-		"compare": "c"
+		"compare": "c",
+		"philosophers.h": "c"
 	}
 }
